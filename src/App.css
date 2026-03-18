@@ -1,0 +1,111 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h1 {
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 16px;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.tab.active {
+  background: #222;
+  color: white;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+.big-number {
+  font-size: 36px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.small-number {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input,
+select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.save-btn {
+  margin-top: 10px;
+  padding: 12px;
+  background: #222;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.history-item,
+.reminder-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.date-text {
+  color: #666;
+  font-size: 14px;
+}
+
+.amount-text {
+  font-weight: bold;
+}
