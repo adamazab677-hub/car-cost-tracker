@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import "./App.css";
 
 const categories = ["Fuel", "Repair", "Insurance", "Tax"];
@@ -29,6 +29,10 @@ export default function App() {
     return [...expenses].sort((a, b) => new Date(b.date) - new Date(a.date));
   }, [expenses]);
 
+  const total = useMemo(() => {
+    return expenses.reduce((sum, item) => sum + Number(item.amount), 0);
+  }, [expenses]);
+
   const resetForm = () => {
     setAmount("");
     setCategory("Fuel");
@@ -39,9 +43,10 @@ export default function App() {
   const handleAddOrUpdate = (e) => {
     e.preventDefault();
     const parsed = Number(amount);
-    if (!parsed || parsed <= 0) return;
 
-    if (editingId) {
+    if (!parsed || parsed <= 0 || !date || !category) return;
+
+    if (editingId !== null) {
       setExpenses((prev) =>
         prev.map((item) =>
           item.id === editingId
@@ -51,13 +56,18 @@ export default function App() {
       );
     } else {
       setExpenses((prev) => [
-        { id: Date.now(), amount: parsed, category, date },
+        {
+          id: Date.now(),
+          amount: parsed,
+          category,
+          date,
+        },
         ...prev,
       ]);
     }
 
     resetForm();
-    setActiveTab("history");
+    setActiveTab("dashboard");
   };
 
   const handleEdit = (item) => {
@@ -70,6 +80,36 @@ export default function App() {
 
   const handleDelete = (id) => {
     setExpenses((prev) => prev.filter((item) => item.id !== id));
+    if (editingId === id) {
+      resetForm();
+    }
+  };
+
+  const renderExpenseList = () => {
+    if (sortedExpenses.length === 0) {
+      return <p>No expenses yet.</p>;
+    }
+
+    return sortedExpenses.map((item) => (
+      <div key={item.id} className="history-item">
+        <div>
+          <strong>{item.category}</strong>
+          <div className="date-text">{item.date}</div>
+        </div>
+
+        <div className="history-right">
+          <div className="amount-text">{formatGBP(item.amount)}</div>
+          <div className="action-buttons">
+            <button className="edit-btn" onClick={() => handleEdit(item)}>
+              Edit
+            </button>
+            <button className="delete-btn" onClick={() => handleDelete(item.id)}>
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    ));
   };
 
   return (
@@ -85,12 +125,14 @@ export default function App() {
           >
             Dashboard
           </button>
+
           <button
             className={activeTab === "add" ? "tab active" : "tab"}
             onClick={() => setActiveTab("add")}
           >
             Add Expense
           </button>
+
           <button
             className={activeTab === "history" ? "tab active" : "tab"}
             onClick={() => setActiveTab("history")}
@@ -99,36 +141,70 @@ export default function App() {
           </button>
         </div>
 
-       {activeTab === "dashboard" && (
-  <div className="card">
-    <h2>Total</h2>
-    <h3>{formatGBP(expenses.reduce((sum, item) => sum + item.amount, 0))}</h3>
-
-    <h2 style={{ marginTop: "20px" }}>All Expenses</h2>
-
-    {sortedExpenses.length === 0 ? (
-      <p>No expenses yet</p>
-    ) : (
-      sortedExpenses.map((item) => (
-        <div key={item.id} className="history-item">
-          <div>
-            <strong>{item.category}</strong>
-            <div className="date-text">{item.date}</div>
-          </div>
-
-          <div className="history-right">
-            <div className="amount-text">{formatGBP(item.amount)}</div>
-            <div className="action-buttons">
-              <button className="edit-btn" onClick={() => handleEdit(item)}>
-                Edit
-              </button>
-              <button className="delete-btn" onClick={() => handleDelete(item.id)}>
-                Delete
-              </button>
+        {activeTab === "dashboard" && (
+          <>
+            <div className="card">
+              <h2>Total</h2>
+              <div className="big-number">{formatGBP(total)}</div>
             </div>
+
+            <div className="card">
+              <h2>All Expenses</h2>
+              {renderExpenseList()}
+            </div>
+          </>
+        )}
+
+        {activeTab === "add" && (
+          <div className="card">
+            <h2>{editingId !== null ? "Edit Expense" : "Add Expense"}</h2>
+
+            <form onSubmit={handleAddOrUpdate} className="form">
+              <label>Amount (£)</label>
+              <input
+                type="number"
+                step="0.01"
+                placeholder="Enter amount"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+
+              <label>Category</label>
+              <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                {categories.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+
+              <label>Date</label>
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+
+              <button type="submit" className="save-btn">
+                {editingId !== null ? "Update Expense" : "Add Expense"}
+              </button>
+
+              {editingId !== null && (
+                <button type="button" className="cancel-btn" onClick={resetForm}>
+                  Cancel
+                </button>
+              )}
+            </form>
           </div>
-        </div>
-      ))
-    )}
-  </div>
-)}
+        )}
+
+        {activeTab === "history" && (
+          <div className="card">
+            <h2>Expense History</h2>
+            {renderExpenseList()}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

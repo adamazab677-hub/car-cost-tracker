@@ -1,22 +1,125 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h1 {
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 16px;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.tab.active {
+  background: #222;
+  color: white;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+.big-number {
+  font-size: 36px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input,
+select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.save-btn,
+.cancel-btn,
+.edit-btn,
+.delete-btn {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.save-btn {
+  background: #222;
+  color: white;
+}
+
+.cancel-btn {
+  background: #9ca3af;
+  color: white;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+  gap: 16px;
+}
+
+.date-text {
+  color: #666;
+  font-size: 14px;
+}
+
+.amount-text {
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align: right;
+}
+
 .history-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 8px;
 }
 
 .action-buttons {
   display: flex;
   gap: 8px;
-}
-
-.edit-btn,
-.delete-btn,
-.cancel-btn {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
 }
 
 .edit-btn {
@@ -25,11 +128,5 @@
 
 .delete-btn {
   background: #dc2626;
-  color: white;
-}
-
-.cancel-btn {
-  margin-top: 8px;
-  background: #9ca3af;
   color: white;
 }
